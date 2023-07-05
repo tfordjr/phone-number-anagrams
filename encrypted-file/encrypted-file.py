@@ -25,20 +25,20 @@ def main():
     ciphertext = encode("File Contents & save to settings") 
     while True:
         match menu():
-            case 1:    # read   
+            case 1:   
                 f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "r")       
                 print("\nDecypting and printing settings.txt")
                 print(f.read())
                 #decode(ciphertext) # and print plaintext
-            case 2:    # append
+            case 2:  
                 print("Appending settings.txt")
                 f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "a")
                 f.write(input("What would you like to append to settings.txt?: "))
-            case 3:    # rewrite
+            case 3:    
                 print("Rewriting settings.txt")
                 f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "r+")
                 f.write(input("What would you like overwrite settings.txt with?: "))
-            case 4:    # quit
+            case 4:    
                 print("Quitting the program...")
                 quit()
             case default:
