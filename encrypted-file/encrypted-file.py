@@ -1,12 +1,4 @@
 import cryptography
-import csv
-import sys, tempfile, os
-import editor
-import subprocess
-import random, string
-from subprocess import call
-
-EDITOR = os.environ.get('EDITOR', 'vim')
 
 def menu():
     userInput = 0
@@ -40,21 +32,16 @@ def main():
                 #decode(ciphertext) # and print plaintext
             case 2:    # append
                 print("Appending settings.txt")
-                #f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "r+")
+                f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "a")
+                f.write(input("What would you like to append to settings.txt?: "))
             case 3:    # rewrite
                 print("Rewriting settings.txt")
-                #f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "r+")
+                f = open(r"C:\Users\Terry\All Projects\encrypted-file\settings.txt", "r+")
+                f.write(input("What would you like overwrite settings.txt with?: "))
             case 4:    # quit
                 print("Quitting the program...")
                 quit()
             case default:
-                pass            
-                        
-                        
+                pass 
             
-                            
-
-
-            
-
 main()
