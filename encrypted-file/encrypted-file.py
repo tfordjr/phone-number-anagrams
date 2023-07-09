@@ -39,11 +39,11 @@ def main():
             case 2:               
                 plaintext = bytes(input("Overwrite settings.txt: "), 'utf-8')
                 cipher = AES.new(key, AES.MODE_CBC)
-                ciphered_data = cipher.encrypt(pad(plaintext, AES.block_size))
+                ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
 
                 with open('settings.txt', 'wb') as f:
                     f.write(cipher.iv)
-                    f.write(ciphered_data)    
+                    f.write(ciphertext)    
             case default:
                 quit("Quitting the program...")            
 
