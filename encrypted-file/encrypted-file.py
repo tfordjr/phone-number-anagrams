@@ -6,24 +6,23 @@ from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
-# key = get_random_bytes(32)
-# print(key)
-
 def menu():
     userInput = 0
-    print("You can...\n\t1) Read settings from the settings file.\n\t2) Overwrite the settings file.\n\t3) Append the settings file.\n\t4) Quit the program")
-    while userInput != 1 and userInput != 2 and userInput != 3 and userInput != 4:
+    print("You can...\n\t1) Read settings from the settings file.")
+    print("\t2) Overwrite settings file.\n\t3) Quit program")
+    while userInput != 1 and userInput != 2 and userInput != 3:
         try:
             print("What would you like to do?: ", end="")
             userInput = int(input())
         except ValueError:
-            print("Please enter 1-4.")
+            print("Please enter 1-3.")
     return userInput
 
 def main(): 
-
+    # key = get_random_bytes(32)
+    # print(key)    # Copied and pasted this from terminal into salt byte string variable
     salt = b'\xc2b\xa1y\xe9 0\x83K4\xbd\xff\x8c&]\x84\xf6L\xc6\xac\x03\xfa\xbdT\xef\xb8\xa6LM\xe8\xb9^'
-    password = "mypassword"
+    password = "waterworld"
     key = PBKDF2(password, salt, dkLen=32)  
 
     while True:
@@ -32,31 +31,20 @@ def main():
                 print("\nDecypting and printing settings.txt")       
                 with open('settings.txt', 'rb') as f:
                     iv = f.read(16)
-                    decrypt_data = f.read()
+                    ciphertext = f.read()
 
                 cipher = AES.new(key, AES.MODE_CBC, iv=iv)
-                original = unpad(cipher.decrypt(decrypt_data), AES.block_size)
-                print(original)                
+                plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+                print(plaintext)                
             case 2:               
-                message = bytes(input("Overwrite settings.txt: "), 'utf-8')
+                plaintext = bytes(input("Overwrite settings.txt: "), 'utf-8')
                 cipher = AES.new(key, AES.MODE_CBC)
-                ciphered_data = cipher.encrypt(pad(message, AES.block_size))
+                ciphered_data = cipher.encrypt(pad(plaintext, AES.block_size))
 
                 with open('settings.txt', 'wb') as f:
                     f.write(cipher.iv)
-                    f.write(ciphered_data)                
-            case 3:    
-                message = bytes(input("Append settings.txt: "), 'utf-8')
-                cipher = AES.new(key, AES.MODE_CBC)
-                ciphered_data = cipher.encrypt(pad(message, AES.block_size))
-
-                with open('settings.txt', 'a') as f:
-                    f.write(cipher.iv)
-                    f.write(ciphered_data)  
-            case 4:    
-                print("Quitting the program...")
-                quit()
+                    f.write(ciphered_data)    
             case default:
-                pass 
-            
+                quit("Quitting the program...")            
+
 main()
