@@ -10,7 +10,7 @@ def userInput():           #User Input to collect phone number
       numbers = 2
   return numbers
 
-def initialize(numbers): 
+def initialize(numbers):  
   letters = ""
   for num in str(numbers):  # convert phone number into starting letter string
     if num == "8" or num == "9":
