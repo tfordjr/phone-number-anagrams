@@ -21,11 +21,27 @@ def initialize(numbers):
       letters += chr(int(num)*3 + 59)
   return letters
 
+def numberize(letters, i, j):
+  #letters[:i], letters[i: j], letters[j:]
+  left = letters[:i]
+  right = letters[j:]
+  numbers = ""
+  for letter in left: # convert left and right substring back to phone numbers
+     numbers += str((ord(letter) - 59) // 3)
+  left = numbers
+  numbers = ""
+  for letter in right: # convert left and right substring back to phone numbers
+     numbers += str((ord(letter) - 59) // 3)
+  right = numbers
+
+  print(left, "-", letters[i: j], "-", right)
+
+
 def cleanWords():
   words = []
   with open('words.txt', 'r') as f: 
       for line in f:
-        words.append(line.rstrip())
+        words.append(line.rstrip().upper())
   return words
   
 
@@ -33,50 +49,33 @@ def main():
     # print("This program will find words that can be created from a phone number!")
     # phoneNumber = userInput()                # Collect phone number
     letters = initialize("6862377")    # Init phone letter string 
-
     combos, found, words = [], [], cleanWords()    
-
-    # if "zum" in words:
-    #    print("yes zum here")
-
+    
     createStrings.counter = 0
     createStrings(letters, 0, combos, found, words)    # Recursive permute strings method call
 
-    combos.sort()
-    print("unique combos:", len(combos))
+    # combos.sort()
+    # print("unique combos:", len(combos))
+    # # print(combos)
 
     found.sort()
+    print("found words:", len(found))
     print(found)
-    print("unique words:", len(found))
-
-    print(len(words))
-    # print(words)
     
-  
-
-
-
 
 
 
 def createStrings(letters, index, combos, found, words):  
     for x in range(3):
         if letters not in combos:
-            combos.append(letters)
+          combos.append(letters)     
 
-            # with open('words.txt', 'rb', 0) as f:
-            #     if binary_search(letters, 0, 10000) != -1:
-            #        found.append(letters)
-
-
-
-            for i in range(len(letters)):
-              for j in range(i + 1, len(letters) + 1):
-                if letters[i:j] in words:
-                   found.append(letters[i:j])
-                  # print(letters[:i], letters[i: j], letters[j:])
-
-            
+          for i in range(len(letters)):
+            for j in range(i + 1, len(letters) + 1):
+              if letters[i:j] not in found and letters[i:j] in words:
+                found.append(letters[i:j])
+                numberize(letters, i, j)
+                # print(letters[:i], letters[i: j], letters[j:])            
         
         if index < 6:     
             createStrings(letters, index + 1, combos, found, words)
