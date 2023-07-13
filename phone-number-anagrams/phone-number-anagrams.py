@@ -21,23 +21,36 @@ def initialize(numbers):
       letters += chr(int(num)*3 + 59)
   return letters
 
-
+def cleanWords():
+  words = []
+  with open('words.txt', 'r') as f: 
+      for line in f:
+        words.append(line.rstrip())
+  return words
+  
 
 def main():
     # print("This program will find words that can be created from a phone number!")
     # phoneNumber = userInput()                # Collect phone number
     letters = initialize("6862377")    # Init phone letter string 
 
-    combos, words = [], []
+    combos, found, words = [], [], cleanWords()    
+
+    # if "zum" in words:
+    #    print("yes zum here")
+
     createStrings.counter = 0
-    createStrings(letters, 0, combos, words)    # Recursive permute strings method call
+    createStrings(letters, 0, combos, found, words)    # Recursive permute strings method call
 
     combos.sort()
-    print(len(combos))
+    print("unique combos:", len(combos))
 
-    words.sort()
-    print(words)
+    found.sort()
+    print(found)
+    print("unique words:", len(found))
+
     print(len(words))
+    # print(words)
     
   
 
@@ -46,19 +59,27 @@ def main():
 
 
 
-def createStrings(letters, index, combos, words):  
+def createStrings(letters, index, combos, found, words):  
     for x in range(3):
-        if letters not in combos:    
+        if letters not in combos:
             combos.append(letters)
 
             # with open('words.txt', 'rb', 0) as f:
             #     if binary_search(letters, 0, 10000) != -1:
-            #        words.append(letters)
+            #        found.append(letters)
+
+
+
+            for i in range(len(letters)):
+              for j in range(i + 1, len(letters) + 1):
+                if letters[i:j] in words:
+                   found.append(letters[i:j])
+                  # print(letters[:i], letters[i: j], letters[j:])
 
             
         
         if index < 6:     
-            createStrings(letters, index + 1, combos, words)
+            createStrings(letters, index + 1, combos, found, words)
 
         # iterate only twice
         if x != 3:
