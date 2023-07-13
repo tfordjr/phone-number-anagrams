@@ -1,3 +1,6 @@
+import mmap
+
+
 def userInput():           #User Input to collect phone number
   numbers = 2
   while len(str(numbers)) != 7:
@@ -22,37 +25,47 @@ def initialize(numbers):
 
 
 def main():
-  print("This program will find words that can be created from a phone number!")
-  phoneNumber = userInput()                # Collect phone number
-  letters = initialize(phoneNumber)    # Init phone letter string 
+#   print("This program will find words that can be created from a phone number!")
+#   phoneNumber = userInput()                # Collect phone number
+  letters = initialize("6862377")    # Init phone letter string 
+
+  combos = []
   createStrings.counter = 0
-  createStrings(letters, 0)    # Recursive permute strings method call
+  createStrings(letters, 0, combos)    # Recursive permute strings method call
 
   print(createStrings.counter)
 
 
-def createStrings(letters, index):       # Recursive method to create all possible combos
-  createStrings.counter += 1
+def createStrings(letters, index, combos):  
 
-  for x in range(2):
-    print(letters)          #Print statement equivalent to test for words statements
-    if index < 7:
-      createStrings(letters, index + 1)
+    for x in range(3):
+        if letters not in combos:    
+            combos.append(letters)
+            print(letters)
+            createStrings.counter += 1
 
-    if index == 1:
-      if chr(ord(letters[-index]) + 1) == "Q":
-        letters = letters[:-index] + chr(ord(letters[-index]) + 2)
-      else:
-        letters = letters[:-index] + chr(ord(letters[-index]) + 1)
-    else:
-      if chr(ord(letters[-index]) + 1) == "Q":
-        letters = letters[:-index] + chr(ord(letters[-index]) + 2) + letters[-(index-1):]
-      else:
-        letters = letters[:-index] + chr(ord(letters[-index]) + 1) + letters[-(index-1):]
+        # with open('words.txt', 'r') as f:
+        #     s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        #     if s.find(bytes(letters, 'utf-8')) != -1:
+        #         print(letters)
+                # createStrings.counter += 1
 
-  print(letters)       #Print statement equivalent to test for words statements
-  if index < 7:
-      createStrings(letters, index + 1)
+        if index < 6:     
+            createStrings(letters, index + 1, combos)
+
+        # iterate only twice
+        if x != 3:
+            if chr(ord(letters[index]) + 1) != "Q":
+                letters = letters[:index] + chr(ord(letters[index]) + 1) + letters[(index + 1):]
+            else:
+                letters = letters[:index] + chr(ord(letters[index]) + 2) + letters[(index + 1):]
+
+
+
+
+
+#   if index >= 0:
+#       createStrings(letters, index - 1)
 
 # test all substrings for words and test full 7 letters for word
 
