@@ -1,4 +1,3 @@
-import mmap
 
 
 def userInput():           #User Input to collect phone number
@@ -25,33 +24,41 @@ def initialize(numbers):
 
 
 def main():
-#   print("This program will find words that can be created from a phone number!")
-#   phoneNumber = userInput()                # Collect phone number
-  letters = initialize("6862377")    # Init phone letter string 
+    # print("This program will find words that can be created from a phone number!")
+    # phoneNumber = userInput()                # Collect phone number
+    letters = initialize("6862377")    # Init phone letter string 
 
-  combos = []
-  createStrings.counter = 0
-  createStrings(letters, 0, combos)    # Recursive permute strings method call
+    combos, words = [], []
+    createStrings.counter = 0
+    createStrings(letters, 0, combos, words)    # Recursive permute strings method call
 
-  print(createStrings.counter)
+    combos.sort()
+    print(len(combos))
+
+    words.sort()
+    print(words)
+    print(len(words))
+    
+  
 
 
-def createStrings(letters, index, combos):  
 
+
+
+
+def createStrings(letters, index, combos, words):  
     for x in range(3):
         if letters not in combos:    
             combos.append(letters)
-            print(letters)
-            createStrings.counter += 1
 
-        # with open('words.txt', 'r') as f:
-        #     s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
-        #     if s.find(bytes(letters, 'utf-8')) != -1:
-        #         print(letters)
-                # createStrings.counter += 1
+            # with open('words.txt', 'rb', 0) as f:
+            #     if binary_search(letters, 0, 10000) != -1:
+            #        words.append(letters)
 
+            
+        
         if index < 6:     
-            createStrings(letters, index + 1, combos)
+            createStrings(letters, index + 1, combos, words)
 
         # iterate only twice
         if x != 3:
