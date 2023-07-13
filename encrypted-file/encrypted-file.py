@@ -1,4 +1,4 @@
-# Project 2 CS 4732 SS2023 Terry Ford Jr.
+# Project 2 CS 4732 SS2023 Terry Ford Jr. 07/09/2023
 # Sources: https://www.youtube.com/watch?v=gyPuAJfOnGk&t=452s
 
 from Crypto.Random import get_random_bytes
