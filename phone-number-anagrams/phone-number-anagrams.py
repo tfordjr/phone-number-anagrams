@@ -13,11 +13,11 @@ def userInput():           #User Input to collect phone number
   return numbers
 
 
-def initialize(numbers):  
+def initialize(numbers):         # converts phone number into letter string
   letters = ""
-  for num in str(numbers):  # convert phone number into starting letter string
-    if num == "8" or num == "9":
-      letters += chr(int(num)*3 + 60)
+  for num in str(numbers):         
+    if num == "8" or num == "9":          # This exists to skip Q and it never reaches z
+      letters += chr(int(num)*3 + 60)     # we have 8 nums representing 3 letters each
     else:
       letters += chr(int(num)*3 + 59)
   return letters
@@ -25,32 +25,29 @@ def initialize(numbers):
 
 def cleanWords():
   words = []
-  with open('words.txt', 'r') as f: 
+  with open('words.txt', 'r') as f:     # only filereading in whole program
     for line in f:
-      words.append(line.rstrip().upper())
-  return words
+      words.append(line.rstrip().upper())  # transfers as uppercase and as string 
+  return words                             # to prep for string comparison later
 
 
 def numberize(letters, i, j):
-  left = letters[:i]
-  right = letters[j:]
-  numbers = ""
-  for letter in left: # convert left and right substring back to phone numbers
-    numbers += str((ord(letter) - 59) // 3)
-  left = numbers
-  numbers = ""
-  for letter in right: # convert left and right substring back to phone numbers
-    numbers += str((ord(letter) - 59) // 3)
-  right = numbers
-  print(left, "-", letters[i: j], "-", right)
+  substrings = [letters[:i], letters[j:]]       # left and right substrings
+  for index, string in enumerate(substrings):
+    numbers = ""
+    for letter in string:
+      numbers += str((ord(letter) - 59) // 3)   # substrings become phone numbers again
+    substrings[index] = numbers
+
+  print(substrings[0], "-", letters[i: j], "-", substrings[1])
 
 # Uses recursion to find all 2,187 unique combinations possible
 def createStrings(letters, index, combos, found, words):   
-  for x in range(3):                                     
-    if letters not in combos:                          
+  for x in range(3):            # each call creates 3 more recursive calls passing
+    if letters not in combos:   # unique strings onward until word length is reached
       combos.append(letters)                            
                                                         
-      for i in range(len(letters)):     # Linear search surprisingly powerful enough
+      for i in range(len(letters)):        # Linear search surprisingly powerful enough
         for j in range(i + 1, len(letters) + 1): 
           if letters[i:j] not in found and letters[i:j] in words:
             found.append(letters[i:j])
@@ -68,17 +65,13 @@ def createStrings(letters, index, combos, found, words):
 
 def main():
   print("This program will find words that can be created from a phone number!")
-  phoneNumber = userInput()                # Collect phone number
-  letters = initialize(phoneNumber)    # Init phone letter string 
-  combos, found, words = [], [], cleanWords()    
-  
-  createStrings.counter = 0
-  createStrings(letters, 0, combos, found, words)    # Recursive method call
-  
+  phoneNumber = userInput()                         # Collect phone number
+  letters = initialize(phoneNumber)                 # Init phone letter string 
+  combos, found, words = [], [], cleanWords()       
+  createStrings(letters, 0, combos, found, words)   # Recursive call
+    
   found.sort()
   print("\n", len(found), "words found!")
   print(found)
-
-
 
 main()
